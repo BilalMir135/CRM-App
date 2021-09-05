@@ -8,8 +8,11 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.facebook.react.bridge.JSIModulePackage; //custom RN-Drawer
+import com.swmansion.reanimated.ReanimatedJSIModulePackage; //custom  RN-Drawer
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -32,6 +35,11 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected String getJSMainModuleName() {
           return "index";
+        }
+
+         @Override //custom RN-Drawer
+        protected JSIModulePackage getJSIModulePackage() {
+          return new ReanimatedJSIModulePackage(); 
         }
       };
 
