@@ -5,9 +5,11 @@ import {Text, Image, View, TouchableOpacity} from 'react-native';
 import styles from './styles';
 import {Container, Input, Button} from '../../components/common';
 import {LOGIN} from '../../constants/routeNames';
+import {useRegisterFormData} from '../../hooks';
 
 const Register = () => {
   const {navigate} = useNavigation();
+  const {error, handleChange, handleSubmit} = useRegisterFormData();
 
   return (
     <Container>
@@ -22,18 +24,40 @@ const Register = () => {
       </View>
 
       <View style={styles.form}>
-        <Input label="Username" placeholder="Enter Username" />
-        <Input label="First name" placeholder="Enter First name" />
-        <Input label="Last name" placeholder="Enter Last name" />
-        <Input label="Email" placeholder="Enter Email" />
+        <Input
+          label="Username"
+          placeholder="Enter Username"
+          onChangeText={value => handleChange({name: 'username', value})}
+          error={error.username}
+        />
+        <Input
+          label="First name"
+          placeholder="Enter First name"
+          onChangeText={value => handleChange({name: 'firstName', value})}
+          error={error.firstName}
+        />
+        <Input
+          label="Last name"
+          placeholder="Enter Last name"
+          onChangeText={value => handleChange({name: 'lastName', value})}
+          error={error.lastName}
+        />
+        <Input
+          label="Email"
+          placeholder="Enter Email"
+          onChangeText={value => handleChange({name: 'email', value})}
+          error={error.email}
+        />
         <Input
           label="Password"
           placeholder="Enter Password"
           secureTextEntry
           icon={<Text>HIDE</Text>}
           iconPosition="right"
+          onChangeText={value => handleChange({name: 'password', value})}
+          error={error.password}
         />
-        <Button type="primary" title="Submit" />
+        <Button type="primary" title="Submit" onPress={handleSubmit} />
       </View>
 
       <View style={styles.registerSection}>
