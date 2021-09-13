@@ -1,6 +1,10 @@
 import {useState, useCallback} from 'react';
 
+import {useAuth} from '../state/auth/hooks';
+
 export const useRegisterFormData = () => {
+  const {registerUserF} = useAuth();
+
   const [formData, setFormData] = useState({
     username: '',
     firstName: '',
@@ -24,13 +28,26 @@ export const useRegisterFormData = () => {
   }, []);
 
   const handleSubmit = useCallback(() => {
+    let validated = true;
     for (const key in formData) {
       if (!formData[key]) {
         setError(prevState => ({
           ...prevState,
           [key]: `Please add ${key.toLowerCase()}`,
         }));
+        validated = false;
       }
+    }
+
+    if (validated) {
+      const {username, email, firstName, lastName, password} = formData;
+      registerUserF({
+        username,
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+      });
     }
   }, [formData]);
 

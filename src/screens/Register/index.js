@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Text, Image, View, TouchableOpacity} from 'react-native';
 
@@ -6,10 +6,19 @@ import styles from './styles';
 import {Container, Input, Button} from '../../components/common';
 import {LOGIN} from '../../constants/routeNames';
 import {useRegisterFormData} from '../../hooks';
+import {useAuth} from '../../state/auth/hooks';
 
 const Register = () => {
   const {navigate} = useNavigation();
   const {error, handleChange, handleSubmit} = useRegisterFormData();
+  const {loading, data, clearStateF} = useAuth();
+
+  useEffect(() => {
+    if (data) {
+      clearStateF();
+      navigate(LOGIN);
+    }
+  }, [data]);
 
   return (
     <Container>
@@ -57,7 +66,12 @@ const Register = () => {
           onChangeText={value => handleChange({name: 'password', value})}
           error={error.password}
         />
-        <Button type="primary" title="Submit" onPress={handleSubmit} />
+        <Button
+          type="primary"
+          title="Submit"
+          loading={loading}
+          onPress={handleSubmit}
+        />
       </View>
 
       <View style={styles.registerSection}>
